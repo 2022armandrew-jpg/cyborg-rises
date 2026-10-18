@@ -6,6 +6,7 @@
   --floor: #1b242d;
   --cyborg: #2de2ff;
   --exit: #38d66b;
+  --battery: #ffd43b;
   --button-bg: #25313d;
   --button-edge: #4a6178;
 }
@@ -44,7 +45,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
 }
 
 /* Square box that holds the maze and lets the win message sit on top of it */
@@ -63,6 +64,7 @@ main {
   height: 100%;
   border: 3px solid var(--button-edge);
   box-sizing: border-box;
+  position: relative;
 }
 
 /* Each wall square */
@@ -80,12 +82,86 @@ main {
   background: var(--exit);
 }
 
-/* The glowing cyan cyborg, drawn as a smaller square inside its cell */
-.cell.cyborg {
+/* Lets a battery be drawn inside its square */
+.cell {
+  position: relative;
+}
+
+/* Battery body: a small yellow rectangle with a dark outline */
+.cell.battery::before {
+  content: "";
+  position: absolute;
+  left: 32%;
+  top: 30%;
+  width: 36%;
+  height: 52%;
+  background: var(--battery);
+  border: 2px solid #5a4a00;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+/* Battery tip: the little terminal nub on top of the body */
+.cell.battery::after {
+  content: "";
+  position: absolute;
+  left: 42%;
+  top: 20%;
+  width: 16%;
+  height: 12%;
+  background: #5a4a00;
+  border-radius: 1px 1px 0 0;
+}
+
+/* The glowing cyan cyborg, one maze square in size, placed over the grid by game.js */
+#cyborg {
+  position: absolute;
+  width: calc(100% / 15);
+  height: calc(100% / 15);
+  transition: top 0.08s linear, left 0.08s linear;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* The cyborg's body: a smaller glowing square in the middle of its square */
+#cyborg::before {
+  content: "";
+  position: absolute;
+  inset: 15%;
   background: var(--cyborg);
   box-shadow: 0 0 8px var(--cyborg);
-  transform: scale(0.7);
   border-radius: 2px;
+}
+
+/* Electric pulse played on the cyborg when it picks up a battery */
+#cyborg.pulse::before {
+  animation: electric-pulse 0.6s ease-out;
+}
+
+/* The pulse: a white-yellow flash with a blue and yellow ring that grows and fades */
+@keyframes electric-pulse {
+  0% {
+    background: #ffffff;
+    transform: scale(1);
+    box-shadow: 0 0 4px #ffffff, 0 0 0 0 var(--battery), 0 0 0 0 var(--cyborg);
+  }
+  30% {
+    background: var(--battery);
+    transform: scale(1.35);
+    box-shadow: 0 0 12px #ffffff, 0 0 0 6px var(--battery), 0 0 0 12px var(--cyborg);
+  }
+  100% {
+    background: var(--cyborg);
+    transform: scale(1);
+    box-shadow: 0 0 8px var(--cyborg), 0 0 0 14px transparent, 0 0 0 24px transparent;
+  }
+}
+
+/* Battery counter above the maze */
+#battery-count {
+  margin: 0;
+  font-weight: 600;
+  color: var(--battery);
 }
 
 /* Dark panel with the win message, laid over the maze */

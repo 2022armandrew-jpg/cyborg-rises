@@ -8,6 +8,7 @@ A small browser maze game. You are a cyborg escaping a lab. Find your way throug
 - **On a computer:** press the arrow keys. Each key press moves the cyborg one square.
 - **On a phone or tablet:** tap the arrow buttons under the maze.
 - Walls block your way. If you walk into one, nothing happens.
+- **Batteries:** three small yellow batteries are dropped in random spots each game. Walk over one to pick it up. The cyborg gives off an electric pulse and the counter above the maze goes up. Batteries are a bonus, so you can still escape without them.
 - When you reach the exit you will see **You escaped!**. Press **Play again** to start over.
 
 ## Run it on your computer
