@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cyborg Rises</title>
-  <!-- Load the lab-themed styles -->
-  <link rel="stylesheet" href="style.css">
+  <!-- Load the lab-themed styles; bump ?v= whenever style.css changes so browsers fetch the new copy -->
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
   <!-- Game title and a short goal for the player -->
@@ -17,8 +17,8 @@
 
   <!-- The maze area; game.js fills the grid and shows the win message on top of it -->
   <main>
-    <!-- How many batteries the cyborg has collected so far -->
-    <p id="battery-count">Batteries: 0 / 3</p>
+    <!-- How many batteries the cyborg has collected so far; screen readers announce each change -->
+    <p id="battery-count" aria-live="polite">Batteries: 0 / 3</p>
 
     <div id="maze-wrap">
       <div id="maze" aria-label="Maze">
@@ -42,7 +42,7 @@
     </div>
   </main>
 
-  <!-- Load the game logic -->
-  <script src="game.js"></script>
+  <!-- Load the game logic; bump ?v= whenever game.js changes so browsers fetch the new copy -->
+  <script src="game.js?v=2"></script>
 </body>
 </html>
