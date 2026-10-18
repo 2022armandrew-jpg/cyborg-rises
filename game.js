@@ -155,7 +155,11 @@ function resetGame() {
   placeBatteries();
   cyborgEl.classList.remove("pulse");
   moveToStart();
+  // Jump straight back to the start without gliding across the walls
+  cyborgEl.style.transition = "none";
   drawPlayer();
+  void cyborgEl.offsetWidth;
+  cyborgEl.style.transition = "";
 }
 
 // How each direction changes the row and column

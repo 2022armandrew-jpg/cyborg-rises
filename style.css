@@ -164,10 +164,11 @@ main {
   color: var(--battery);
 }
 
-/* Dark panel with the win message, laid over the maze */
+/* Dark panel with the win message, laid over the maze and the cyborg */
 #win-overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
