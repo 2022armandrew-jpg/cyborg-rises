@@ -1,0 +1,173 @@
+/* Colour palette for the lab theme, kept in one place so it is easy to tweak */
+:root {
+  --page-bg: #11161c;
+  --text: #d6e2ee;
+  --wall: #3d4f61;
+  --floor: #1b242d;
+  --cyborg: #2de2ff;
+  --exit: #38d66b;
+  --button-bg: #25313d;
+  --button-edge: #4a6178;
+}
+
+/* Page background, font and centred column layout */
+body {
+  margin: 0;
+  padding: 16px;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Title and goal text */
+header {
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 4px;
+  letter-spacing: 2px;
+  color: var(--cyborg);
+}
+
+header p {
+  margin: 0 0 16px;
+}
+
+/* Stack the maze and the arrow buttons vertically */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Square box that holds the maze and lets the win message sit on top of it */
+#maze-wrap {
+  position: relative;
+  width: min(92vw, 480px);
+  aspect-ratio: 1;
+}
+
+/* The 15 x 15 grid of coloured squares */
+#maze {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  width: 100%;
+  height: 100%;
+  border: 3px solid var(--button-edge);
+  box-sizing: border-box;
+}
+
+/* Each wall square */
+.cell.wall {
+  background: var(--wall);
+}
+
+/* Each walkable floor square */
+.cell.path {
+  background: var(--floor);
+}
+
+/* The green exit square */
+.cell.exit {
+  background: var(--exit);
+}
+
+/* The glowing cyan cyborg, drawn as a smaller square inside its cell */
+.cell.cyborg {
+  background: var(--cyborg);
+  box-shadow: 0 0 8px var(--cyborg);
+  transform: scale(0.7);
+  border-radius: 2px;
+}
+
+/* Dark panel with the win message, laid over the maze */
+#win-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(17, 22, 28, 0.88);
+}
+
+/* Make sure the hidden attribute really hides the overlay */
+#win-overlay[hidden] {
+  display: none;
+}
+
+/* Win message text */
+#win-overlay h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--exit);
+}
+
+/* Shared look for the Play again button and the arrow buttons */
+button {
+  background: var(--button-bg);
+  color: var(--text);
+  border: 2px solid var(--button-edge);
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* Highlight a button while it is pressed */
+button:active {
+  background: var(--button-edge);
+}
+
+/* Play again button is a bit bigger than a plain button */
+#play-again {
+  padding: 12px 24px;
+}
+
+/* Arrow buttons laid out like a keyboard cross: up on top, three below */
+#dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 72px);
+  grid-template-rows: repeat(2, 72px);
+  gap: 8px;
+}
+
+/* Each arrow button fills its grid slot */
+#dpad .arrow {
+  width: 100%;
+  height: 100%;
+  font-size: 1.6rem;
+}
+
+/* Up arrow goes in the top middle slot */
+#dpad .up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* Left arrow goes in the bottom left slot */
+#dpad .left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+/* Down arrow goes in the bottom middle slot */
+#dpad .down {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Right arrow goes in the bottom right slot */
+#dpad .right {
+  grid-column: 3;
+  grid-row: 2;
+}
