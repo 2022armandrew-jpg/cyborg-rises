@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- Page setup: language, text encoding and a mobile-friendly screen width -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cyborg Rises</title>
+  <!-- Load the lab-themed styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Game title and a short goal for the player -->
+  <header>
+    <h1>Cyborg Rises</h1>
+    <p>Guide the cyborg from the start to the green exit and escape the lab.</p>
+  </header>
+
+  <!-- The maze area; game.js fills the grid and shows the win message on top of it -->
+  <main>
+    <div id="maze-wrap">
+      <div id="maze" aria-label="Maze"></div>
+
+      <!-- Win message with a Play again button, hidden until the cyborg reaches the exit -->
+      <div id="win-overlay" hidden>
+        <h2>You escaped!</h2>
+        <button id="play-again" type="button">Play again</button>
+      </div>
+    </div>
+
+    <!-- On-screen arrow buttons for phones and tablets -->
+    <div id="dpad" aria-label="Move buttons">
+      <button type="button" class="arrow up" data-dir="up" aria-label="Move up">&#9650;</button>
+      <button type="button" class="arrow left" data-dir="left" aria-label="Move left">&#9664;</button>
+      <button type="button" class="arrow down" data-dir="down" aria-label="Move down">&#9660;</button>
+      <button type="button" class="arrow right" data-dir="right" aria-label="Move right">&#9654;</button>
+    </div>
+  </main>
+
+  <!-- Load the game logic -->
+  <script src="game.js"></script>
+</body>
+</html>
