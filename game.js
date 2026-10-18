@@ -17,12 +17,21 @@ const MAZE = [
   "###############",
 ];
 
+// How many batteries are hidden in the maze each game
+const BATTERY_COUNT = 3;
+
 // Where the cyborg is now and whether the player has escaped yet
 const player = { row: 0, col: 0 };
 let won = false;
 
+// Batteries still lying in the maze, and how many the cyborg has picked up
+let batteries = [];
+let collected = 0;
+
 // Page elements the game needs to talk to
 const mazeEl = document.getElementById("maze");
+const cyborgEl = document.getElementById("cyborg");
+const counterEl = document.getElementById("battery-count");
 const overlayEl = document.getElementById("win-overlay");
 const playAgainBtn = document.getElementById("play-again");
 
@@ -55,14 +64,59 @@ function buildMaze() {
   }
 }
 
-// Show the cyborg on whichever square it is standing on and remove it from the others
+// Move the cyborg on screen to the square it is standing on
 function drawPlayer() {
-  for (const rowCells of cells) {
-    for (const cell of rowCells) {
-      cell.classList.remove("cyborg");
+  cyborgEl.style.top = (player.row * 100) / MAZE.length + "%";
+  cyborgEl.style.left = (player.col * 100) / MAZE[0].length + "%";
+}
+
+// Show the current battery total above the maze
+function updateCounter() {
+  counterEl.textContent = "Batteries: " + collected + " / " + BATTERY_COUNT;
+}
+
+// Remove any old batteries, then drop new ones on random path squares (never on S or E)
+function placeBatteries() {
+  for (const battery of batteries) {
+    cells[battery.row][battery.col].classList.remove("battery");
+  }
+  const freeSquares = [];
+  for (let row = 0; row < MAZE.length; row++) {
+    for (let col = 0; col < MAZE[row].length; col++) {
+      if (MAZE[row][col] === ".") {
+        freeSquares.push({ row, col });
+      }
     }
   }
-  cells[player.row][player.col].classList.add("cyborg");
+  // Shuffle the free squares so the first few are a random pick
+  for (let i = freeSquares.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [freeSquares[i], freeSquares[j]] = [freeSquares[j], freeSquares[i]];
+  }
+  batteries = freeSquares.slice(0, BATTERY_COUNT);
+  for (const battery of batteries) {
+    cells[battery.row][battery.col].classList.add("battery");
+  }
+}
+
+// Play the electric pulse on the cyborg, restarting it if one is already playing
+function pulseCyborg() {
+  cyborgEl.classList.remove("pulse");
+  void cyborgEl.offsetWidth;
+  cyborgEl.classList.add("pulse");
+}
+
+// If the cyborg is standing on a battery, pick it up, count it and pulse
+function pickUpBattery() {
+  const index = batteries.findIndex((b) => b.row === player.row && b.col === player.col);
+  if (index === -1) {
+    return;
+  }
+  cells[player.row][player.col].classList.remove("battery");
+  batteries.splice(index, 1);
+  collected++;
+  updateCounter();
+  pulseCyborg();
 }
 
 // Show the "You escaped!" message once the cyborg stands on the exit
@@ -88,13 +142,18 @@ function tryMove(rowStep, colStep) {
   player.row = newRow;
   player.col = newCol;
   drawPlayer();
+  pickUpBattery();
   checkWin();
 }
 
-// Put the cyborg back on the start square and hide the win message
+// Put the cyborg back on the start square, scatter fresh batteries and hide the win message
 function resetGame() {
   won = false;
   overlayEl.hidden = true;
+  collected = 0;
+  updateCounter();
+  placeBatteries();
+  cyborgEl.classList.remove("pulse");
   moveToStart();
   drawPlayer();
 }
@@ -131,7 +190,6 @@ document.querySelectorAll("#dpad .arrow").forEach((button) => {
 // Play again button starts the maze over
 playAgainBtn.addEventListener("click", resetGame);
 
-// Start the game: build the maze, place the cyborg on S and draw it
+// Start the game: build the maze, then set up batteries and the cyborg on S
 buildMaze();
-moveToStart();
-drawPlayer();
+resetGame();

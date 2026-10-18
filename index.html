@@ -17,8 +17,14 @@
 
   <!-- The maze area; game.js fills the grid and shows the win message on top of it -->
   <main>
+    <!-- How many batteries the cyborg has collected so far -->
+    <p id="battery-count">Batteries: 0 / 3</p>
+
     <div id="maze-wrap">
-      <div id="maze" aria-label="Maze"></div>
+      <div id="maze" aria-label="Maze">
+        <!-- The cyborg, drawn on top of the maze so its electric pulse can play while it moves -->
+        <div id="cyborg"></div>
+      </div>
 
       <!-- Win message with a Play again button, hidden until the cyborg reaches the exit -->
       <div id="win-overlay" hidden>
